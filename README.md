@@ -10,7 +10,7 @@
 
 ## What is AEGIS?
 
-AEGIS is an open source framework that helps organisations operationalise AI governance and security. It translates complex regulatory requirements — EU AI Act, GDPR Article 35, and ISO/IEC 42001 — into executable, auditable workflows that security and risk teams can actually use.
+AEGIS is an open source framework that helps organisations operationalise AI governance and security. It translates complex regulatory requirements such as EU AI Act, GDPR Article 35, and ISO/IEC 42001 into executable, auditable workflows that security and risk teams can actually use.
 
 **AEGIS automates:**
 - 🔴 **EU AI Act risk classification** — classify AI systems by risk tier with documented rationale
@@ -21,7 +21,7 @@ AEGIS is an open source framework that helps organisations operationalise AI gov
 - 💡 **Explainability & transparency reporting** — generate structured outputs that make AI decision-making auditable and interpretable
 - 📊 **Governance gap reporting** — produce structured reports for security teams, DPOs, and regulators
 
-Built for organisations that need to govern AI responsibly — not just tick boxes.
+Built for organisations that need to govern AI responsibly not just tick boxes.
 
 ---
 
@@ -35,7 +35,7 @@ Most enterprises are adopting AI faster than their security and governance frame
 - Model documentation that doesn't hold up to regulatory or audit scrutiny
 - DPIA processes that weren't designed with AI systems in mind
 
-AEGIS bridges the gap between AI deployment and AI accountability — with security and explainability built in from the start, not bolted on after.
+AEGIS bridges the gap between AI deployment and AI accountability with security and explainability built in from the start, not bolted on after.
 
 ---
 
@@ -45,7 +45,7 @@ AEGIS bridges the gap between AI deployment and AI accountability — with secur
 
 **Human-in-the-loop by design** — High-risk AI decisions require meaningful human oversight, not just a log entry. AEGIS helps organisations define, document, and enforce HITL checkpoints that satisfy both regulatory and ethical standards.
 
-**Transparency and explainability** — Stakeholders — whether regulators, users, or internal audit — deserve to understand how AI systems reach decisions. AEGIS generates explainability outputs that go beyond model cards into operational transparency.
+**Transparency and explainability** — Stakeholders whether regulators, users, or internal audit deserve to understand how AI systems reach decisions. AEGIS generates explainability outputs that go beyond model cards into operational transparency.
 
 **Governance as code** — Policies and controls should be versioned, testable, and auditable. AEGIS treats governance artefacts the same way engineering teams treat infrastructure.
 
@@ -146,7 +146,7 @@ Free to use, modify, and distribute. Attribution appreciated.
 
 ## About
 
-AEGIS was created by [Kem Ada](https://linkedin.com/in/kem-a-695462101), a Cybersecurity GRC & AI Risk Specialist with global experience across EMEA, North America, and APAC. The project grew out of real-world enterprise AI security and governance work — and the absence of accessible, open source tooling that treats AI security and AI governance as two sides of the same problem.
+AEGIS was created by [Kem Ada](https://linkedin.com/in/kem-a-695462101), a Cybersecurity GRC & AI Risk Specialist with global experience across EMEA, North America, and APAC. The project grew out of real-world enterprise AI security and governance work and the absence of accessible, open source tooling that treats AI security and AI governance as two sides of the same problem.
 
 ---
 
