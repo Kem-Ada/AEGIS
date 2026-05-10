@@ -96,8 +96,12 @@ hitl.define_checkpoint(
 | Human-in-the-loop control framework | 🔄 In progress |
 | Explainability & transparency reporting | 🔄 In progress |
 | AI system inventory tracker | 🔄 In progress |
-| Streamlit dashboard UI | 📅 Planned |
+| Streamlit dashboard UI | ✅ Available |
 | AWS / Azure / GCP integration docs | 📅 Planned |
+
+## Live Demo
+Try AEGIS instantly — no installation required:
+🔗 [aegis-classifier.streamlit.app](https://aegis-classifier.streamlit.app)
 
 ---
 
@@ -106,7 +110,7 @@ hitl.define_checkpoint(
 **Requirements:** Python 3.9+, pandas, pydantic, streamlit
 
 ```bash
-git clone https://github.com/aegis-framework/aegis.git
+git clone https://github.com/Kem-Ada/AEGIS.git
 cd aegis
 pip install -r requirements.txt
 ```
