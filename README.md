@@ -5,8 +5,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
 [![Contributions Welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg)](CONTRIBUTING.md)
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-aegis--classifier.streamlit.app-white?style=flat&logo=streamlit&logoColor=black)](https://aegis-classifier.streamlit.app)
-
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-aegis--classifier.streamlit.app-FF4B4B?style=flat&logo=streamlit&logoColor=white)](https://aegis-classifier.streamlit.app)
 ---
 
 ## What is AEGIS?
