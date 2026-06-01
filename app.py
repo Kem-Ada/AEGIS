@@ -204,8 +204,7 @@ st.markdown("<p style='text-align:center; color:#6b7280; font-size:0.85rem; marg
 
 
 # --- Input Form ---
-st.markdown('<div class="section-card">', unsafe_allow_html=True)
-st.markdown('<div class="section-label">01 — System Details</div>', unsafe_allow_html=True)
+
 
 system_name = st.text_input(
     "AI System Name",
@@ -233,8 +232,7 @@ sector = st.selectbox(
 )
 st.markdown('</div>', unsafe_allow_html=True)
 
-st.markdown('<div class="section-card">', unsafe_allow_html=True)
-st.markdown('<div class="section-label">02 — System Characteristics</div>', unsafe_allow_html=True)
+
 
 makes_automated_decisions = st.checkbox(
     "This system makes or assists in automated decisions that affect individuals",
