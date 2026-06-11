@@ -5,7 +5,8 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
 [![Contributions Welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg)](CONTRIBUTING.md)
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-aegis--classifier.streamlit.app-FF4B4B?style=flat&logo=streamlit&logoColor=white)](https://aegis-classifier.streamlit.app)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-kem--ada.github.io%2FAEGIS-10b9a8)](https://kem-ada.github.io/AEGIS/)
+[![Python demo](https://img.shields.io/badge/Python%20demo-Streamlit-FF4B4B?logo=streamlit&logoColor=white)](https://aegis-classifier.streamlit.app)
 ---
 
 ## What is AEGIS?
@@ -100,8 +101,9 @@ hitl.define_checkpoint(
 | AWS / Azure / GCP integration docs | 📅 Planned |
 
 ## Live Demo
-Try AEGIS instantly — no installation required:
-🔗 [aegis-classifier.streamlit.app](https://aegis-classifier.streamlit.app)
+**Try AEGIS in your browser:** [kem-ada.github.io/AEGIS](https://kem-ada.github.io/AEGIS/) — run assessments, view step-by-step reasoning, and export branded PDF reports. No installation required.
+
+A Streamlit build of the Python package also runs at [aegis-classifier.streamlit.app](https://aegis-classifier.streamlit.app)
 
 ---
 
