@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AEGIS — AI Ethics & Governance Integrated System</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root{
+    --bg:#f6f8fa;
+    --bg-soft:#eef2f6;
+    --card:#ffffff;
+    --ink:#0f1b2d;
+    --ink-2:#33455c;
+    --muted:#67788d;
+    --faint:#9aa8b8;
+    --line:#e3e9f0;
+    --line-2:#eef2f6;
+    --teal:#10b9a8;
+    --teal-deep:#0c8e82;
+    --teal-ink:#0a6b62;
+    --navy:#13294b;
+    --red:#e2574c;
+    --amber:#e0972f;
+    --blue:#3b76b8;
+    --green:#2f9e6a;
+    --teal-wash:#e6faf7;
+    --shadow:0 1px 2px rgba(15,27,45,.04),0 8px 24px rgba(15,27,45,.06);
+    --shadow-lg:0 2px 4px rgba(15,27,45,.05),0 18px 50px rgba(15,27,45,.10);
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;background:var(--bg)}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+
+  /* ambient top wash */
+  body::before{
+    content:"";position:fixed;inset:0 0 auto 0;height:520px;z-index:0;pointer-events:none;
+    background:
+      radial-gradient(800px 360px at 50% -120px,rgba(16,185,168,.14),transparent 70%),
+      linear-gradient(180deg,#ffffff 0%,var(--bg) 60%);
+  }
+
+  .wrap{position:relative;z-index:1;max-width:940px;margin:0 auto;padding:0 24px}
+
+  /* nav */
+  .topbar{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:22px 0 0;
+  }
+  .brand{display:flex;align-items:center;gap:11px}
+  .brand svg{width:34px;height:34px}
+  .brand .bn{font-family:'Sora',sans-serif;font-weight:700;font-size:20px;letter-spacing:.3px;color:var(--navy)}
+  .brand .bn b{color:var(--teal-deep)}
+  .nav-links{display:flex;gap:8px;align-items:center}
+  .nav-links a{
+    font-size:13px;font-weight:600;color:var(--ink-2);text-decoration:none;
+    padding:8px 14px;border-radius:8px;transition:.15s;
+  }
+  .nav-links a:hover{background:var(--bg-soft);color:var(--navy)}
+  .nav-links a.cta{background:var(--navy);color:#fff}
+  .nav-links a.cta:hover{background:#0c1d38}
+
+  /* hero */
+  header{text-align:center;padding:54px 0 26px}
+  .eyebrow{
+    display:inline-block;font-family:'JetBrains Mono',monospace;font-size:11px;
+    letter-spacing:2px;text-transform:uppercase;color:var(--teal-ink);
+    background:var(--teal-wash);border:1px solid #c9f0ea;
+    padding:6px 13px;border-radius:99px;margin-bottom:22px;
+  }
+  header h1{
+    font-family:'Sora',sans-serif;font-weight:800;letter-spacing:-1px;
+    font-size:42px;line-height:1.12;color:var(--navy);max-width:680px;margin:0 auto 16px;
+  }
+  header h1 .accent{
+    background:linear-gradient(120deg,var(--teal-deep),var(--teal));
+    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  }
+  header p.lede{max-width:580px;margin:0 auto;color:var(--ink-2);font-size:16px}
+
+  /* tabs */
+  .tabs{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:40px 0 18px}
+  .tab{
+    font-family:'Inter',sans-serif;font-weight:600;font-size:13.5px;
+    padding:11px 18px;border-radius:11px;cursor:pointer;transition:.16s;
+    background:var(--card);color:var(--ink-2);border:1px solid var(--line);
+    display:flex;align-items:center;gap:9px;box-shadow:var(--shadow);
+  }
+  .tab:hover{color:var(--navy);transform:translateY(-1px)}
+  .tab.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+  .tab .dot{width:8px;height:8px;border-radius:50%}
+  .tab.active .dot{box-shadow:0 0 0 3px rgba(255,255,255,.15)}
+  .dot-red{background:var(--red)}.dot-teal{background:var(--teal)}.dot-blue{background:var(--blue)}
+
+  /* panel */
+  .panel{
+    background:var(--card);border:1px solid var(--line);border-radius:18px;
+    padding:38px;box-shadow:var(--shadow-lg);display:none;
+  }
+  .panel.active{display:block;animation:fade .4s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+  .panel-head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:6px}
+  .panel-head h2{font-family:'Sora',sans-serif;font-weight:700;font-size:24px;color:var(--navy);letter-spacing:-.3px}
+  .panel-head .reg{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.5px;color:var(--teal-ink);background:var(--teal-wash);padding:5px 10px;border-radius:7px;white-space:nowrap}
+  .panel-sub{color:var(--ink-2);font-size:14px;margin-bottom:28px;max-width:660px}
+
+  label.field-label{display:block;font-size:12px;font-weight:700;letter-spacing:.3px;color:var(--ink-2);text-transform:uppercase;margin:20px 0 8px}
+  input[type=text],textarea,select{
+    width:100%;background:#fbfcfd;border:1.5px solid var(--line);border-radius:11px;
+    padding:13px 15px;color:var(--ink);font-family:'Inter',sans-serif;font-size:14.5px;transition:.15s;
+  }
+  input[type=text]:focus,textarea:focus,select:focus{outline:none;border-color:var(--teal);background:#fff;box-shadow:0 0 0 4px rgba(16,185,168,.10)}
+  input::placeholder,textarea::placeholder{color:var(--faint)}
+  textarea{resize:vertical;min-height:66px;line-height:1.5}
+  select{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%2367788d' stroke-width='2.5'><path d='M6 9l6 6 6-6'/></svg>");background-repeat:no-repeat;background-position:right 15px center}
+
+  .micro{font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.5px;color:var(--faint);margin:22px 0 8px}
+
+  .checks{display:flex;flex-direction:column;gap:3px}
+  .check{display:flex;align-items:flex-start;gap:13px;padding:13px 14px;border-radius:11px;cursor:pointer;border:1.5px solid transparent;transition:.15s}
+  .check:hover{background:#fbfcfd;border-color:var(--line)}
+  .check input{appearance:none;-webkit-appearance:none;width:19px;height:19px;min-width:19px;margin-top:1px;border:1.5px solid #c4d0dd;border-radius:6px;background:#fff;cursor:pointer;position:relative;transition:.15s}
+  .check input:checked{background:var(--teal);border-color:var(--teal)}
+  .check input:checked::after{content:"";position:absolute;left:6px;top:2px;width:5px;height:10px;border:solid #fff;border-width:0 2.5px 2.5px 0;transform:rotate(45deg)}
+  .check span{font-size:14px;color:var(--ink);font-weight:500;padding-top:1px}
+  .check .hint{display:block;font-size:12px;color:var(--muted);margin-top:3px;font-weight:400}
+
+  .btn{
+    width:100%;margin-top:28px;background:linear-gradient(120deg,var(--teal-deep),var(--teal));
+    color:#fff;border:none;border-radius:12px;padding:15px;font-family:'Inter',sans-serif;
+    font-weight:700;font-size:14.5px;letter-spacing:.3px;cursor:pointer;transition:.16s;
+    box-shadow:0 6px 18px rgba(16,185,168,.28);
+  }
+  .btn:hover{filter:brightness(1.04);transform:translateY(-1px);box-shadow:0 10px 26px rgba(16,185,168,.34)}
+  .btn:active{transform:none}
+  .btn.secondary{background:#fff;color:var(--navy);border:1.5px solid var(--line);box-shadow:none}
+  .btn.secondary:hover{border-color:var(--teal);color:var(--teal-deep);filter:none;transform:none;box-shadow:none}
+
+  .result{margin-top:30px;display:none}
+  .result.show{display:block;animation:fade .4s ease}
+
+  .verdict{border-radius:16px;padding:28px;border:1px solid var(--line);background:#fff;position:relative;overflow:hidden;box-shadow:var(--shadow)}
+  .verdict::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px}
+  .verdict.t-unacceptable::before{background:var(--red)}
+  .verdict.t-high::before{background:var(--amber)}
+  .verdict.t-limited::before{background:var(--blue)}
+  .verdict.t-minimal::before{background:var(--green)}
+
+  .verdict-top{display:flex;align-items:center;gap:12px;margin-bottom:2px}
+  .tier-chip{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;text-transform:uppercase;padding:6px 12px;border-radius:7px;font-weight:500}
+  .t-unacceptable .tier-chip{background:#fdeceb;color:#c4392e}
+  .t-high .tier-chip{background:#fcf2e3;color:#b9781b}
+  .t-limited .tier-chip{background:#eaf2fb;color:#2f6298}
+  .t-minimal .tier-chip{background:#e7f6ee;color:#1f8052}
+
+  .verdict h3{font-family:'Sora',sans-serif;font-weight:700;font-size:27px;margin:12px 0 6px;color:var(--navy);letter-spacing:-.4px}
+  .verdict .desc{color:var(--ink-2);font-size:14.5px;margin-bottom:16px}
+
+  .meter-wrap{margin:20px 0 6px}
+  .meter-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
+  .meter-top .lbl{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.5px;color:var(--muted);text-transform:uppercase}
+  .meter-top .val{font-family:'Sora',sans-serif;font-weight:700;font-size:18px;color:var(--navy)}
+  .meter{height:9px;background:var(--bg-soft);border-radius:99px;overflow:hidden}
+  .meter-fill{height:100%;border-radius:99px;width:0;transition:width .9s cubic-bezier(.2,.8,.2,1)}
+
+  .trace-title,.block-title{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--teal-ink);margin:26px 0 12px}
+  .trace{border-left:2px solid var(--line)}
+  .step{position:relative;padding:0 0 18px 26px}
+  .step::before{content:"";position:absolute;left:-7px;top:3px;width:11px;height:11px;border-radius:50%;background:#fff;border:2.5px solid var(--teal)}
+  .step:last-child{padding-bottom:0}
+  .step .s-head{font-weight:700;font-size:14px;color:var(--navy);margin-bottom:3px}
+  .step .s-body{font-size:13.5px;color:var(--ink-2)}
+  .step .s-body code{font-family:'JetBrains Mono',monospace;font-size:12px;background:var(--teal-wash);padding:2px 7px;border-radius:5px;color:var(--teal-ink)}
+  .step .s-body strong{color:var(--navy)}
+
+  .li{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--line-2);font-size:14px;color:var(--ink)}
+  .li:last-child{border-bottom:none}
+  .li .n{font-family:'JetBrains Mono',monospace;color:var(--teal-deep);font-size:12.5px;min-width:24px;font-weight:500}
+
+  .meta-row{display:flex;gap:28px;flex-wrap:wrap;margin-top:22px;padding-top:20px;border-top:1px solid var(--line)}
+  .meta-item .k{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+  .meta-item .v{font-size:15px;color:var(--navy);font-weight:700}
+
+  .disclaimer{font-size:12px;color:var(--faint);text-align:center;margin-top:20px;font-style:italic}
+
+  .codebox{margin-top:22px;background:#fbfcfd;border:1px solid var(--line);border-radius:12px;padding:20px;max-height:440px;overflow:auto;font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--ink-2);white-space:pre-wrap;line-height:1.6}
+
+  .feedback{margin-top:24px;padding:20px;border:1px solid var(--line);border-radius:12px;background:#fbfcfd}
+  .feedback .ttl{font-size:12.5px;font-weight:700;color:var(--ink-2);text-transform:uppercase;letter-spacing:.3px;margin-bottom:12px}
+  .fb-btns{display:flex;gap:9px;flex-wrap:wrap}
+  .fb-btns button{flex:1;min-width:130px;background:#fff;border:1.5px solid var(--line);color:var(--ink-2);border-radius:9px;padding:11px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:.15s}
+  .fb-btns button:hover{border-color:var(--teal);color:var(--teal-deep)}
+  .fb-thanks{display:none;color:var(--green);font-size:13px;font-weight:600;margin-top:12px}
+
+  /* ---------- PDF report (print) ---------- */
+  #printable{display:none}
+  @media print{
+    @page{size:A4;margin:16mm}
+    html,body{background:#fff !important}
+    body::before{display:none !important}
+    .wrap{display:none !important}
+    #printable{display:block !important;color:#0f1b2d;font-family:'Inter',sans-serif}
+  }
+  .r-head{display:flex;justify-content:space-between;align-items:baseline;border-bottom:3px solid var(--teal);padding-bottom:10px;margin-bottom:16px}
+  .r-brand{font-family:'Sora',sans-serif;font-weight:800;font-size:22px;color:var(--navy)}
+  .r-brand b{color:var(--teal-deep)}
+  .r-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#67788d}
+  .r-title{font-family:'Sora',sans-serif;font-size:19px;font-weight:700;color:var(--navy);margin:4px 0 14px}
+  .r-meta{width:100%;border-collapse:collapse;margin-bottom:16px;font-size:12px}
+  .r-meta td{border:1px solid #dfe6ee;padding:7px 10px;color:#0f1b2d}
+  .r-meta td.k{width:34%;color:#67788d;text-transform:uppercase;font-size:9.5px;letter-spacing:.6px;font-family:'JetBrains Mono',monospace}
+  .r-verdict{border:1px solid #dfe6ee;border-left:5px solid var(--rc,#0c8e82);padding:13px 16px;margin:12px 0;border-radius:6px;page-break-inside:avoid}
+  .r-chip{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--rc,#0c8e82)}
+  .r-vt{font-family:'Sora',sans-serif;font-size:16.5px;font-weight:700;color:var(--navy);margin:4px 0 2px}
+  .r-sum{font-size:12px;color:#33455c}
+  .r-score{font-size:12px;margin-top:8px;color:var(--navy)}
+  .r-sec{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--teal-ink);margin:16px 0 8px;border-bottom:1px solid #e3e9f0;padding-bottom:4px}
+  .r-step{margin:0 0 9px;page-break-inside:avoid}
+  .r-step .h{font-weight:700;font-size:12px;color:var(--navy)}
+  .r-step .b{font-size:11.5px;color:#33455c}
+  .r-step code{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--teal-ink)}
+  .r-li{display:flex;gap:8px;font-size:11.5px;color:#0f1b2d;padding:4px 0;border-bottom:1px solid #f0f3f7;page-break-inside:avoid}
+  .r-li .n{font-family:'JetBrains Mono',monospace;color:var(--teal-deep);min-width:20px;font-size:10.5px}
+  .r-para{font-size:11.5px;color:#33455c;margin-bottom:6px;white-space:pre-wrap}
+  .r-sign{margin-top:26px;display:flex;gap:36px;page-break-inside:avoid}
+  .r-sign div{flex:1;border-top:1px solid #9aa8b8;padding-top:6px;font-size:10.5px;color:#67788d}
+  .r-disc{margin-top:20px;font-size:9.5px;color:#9aa8b8;font-style:italic}
+  .r-foot{margin-top:8px;font-family:'JetBrains Mono',monospace;font-size:9px;color:#9aa8b8}
+
+  footer{text-align:center;padding:50px 0 44px;margin-top:48px;border-top:1px solid var(--line)}
+  footer .f-mark{font-family:'Sora',sans-serif;font-weight:700;font-size:18px;color:var(--navy);margin-bottom:8px}
+  footer .f-mark b{color:var(--teal-deep)}
+  footer .f-line{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);letter-spacing:.3px}
+  footer a{color:var(--teal-deep);text-decoration:none;font-weight:500}
+  footer a:hover{text-decoration:underline}
+  footer .f-disc{font-size:11.5px;color:var(--faint);max-width:560px;margin:18px auto 0;line-height:1.55}
+
+  @media (max-width:560px){
+    .panel{padding:24px}
+    header h1{font-size:32px}
+    .verdict h3{font-size:23px}
+    .nav-links a:not(.cta){display:none}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important}
+    .meter-fill{transition:none!important}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <div class="brand">
+      <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M24 4l16 6v9c0 11-6.8 18.4-16 25C14.8 37.4 8 30 8 19v-9l16-6z" fill="#10b9a8" fill-opacity="0.10" stroke="#0c8e82" stroke-width="2"/>
+        <path d="M24 13.5v19M15 22h18" stroke="#13294b" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="24" cy="13.5" r="2.6" fill="#10b9a8"/>
+      </svg>
+      <span class="bn">AE<b>G</b>IS</span>
+    </div>
+    <nav class="nav-links">
+      <a href="#tools">Tools</a>
+      <a href="https://github.com/Kem-Ada/AEGIS" target="_blank" rel="noopener">GitHub</a>
+      <a href="#tools" class="cta">Try it free</a>
+    </nav>
+  </div>
+
+  <header id="tools">
+    <span class="eyebrow">AI Ethics &amp; Governance Integrated System</span>
+    <h1>AI governance assessments, <span class="accent">in minutes, not weeks</span></h1>
+    <p class="lede">AEGIS assesses your AI systems the way an expert would. It weighs each factor, shows its reasoning, and grounds every conclusion in the regulation it comes from, so small and growing teams can evaluate compliance with confidence.</p>
+  </header>
+
+  <div class="tabs" role="tablist">
+    <button class="tab active" data-tab="clf" role="tab"><span class="dot dot-red"></span>EU AI Act Classifier</button>
+    <button class="tab" data-tab="dpia" role="tab"><span class="dot dot-teal"></span>DPIA Assessment</button>
+    <button class="tab" data-tab="mc" role="tab"><span class="dot dot-blue"></span>Model Card</button>
+  </div>
+
+  <!-- CLASSIFIER -->
+  <section class="panel active" id="panel-clf" role="tabpanel">
+    <div class="panel-head">
+      <h2>EU AI Act Risk Assessment</h2>
+      <span class="reg">Regulation (EU) 2024/1689</span>
+    </div>
+    <p class="panel-sub">Describe the system. AEGIS reasons across the prohibited-practice tests (Art. 5), the high-risk schedule (Annex III), and the transparency duties (Art. 50) before reaching a tier.</p>
+
+    <label class="field-label">AI system name</label>
+    <input type="text" id="clf_name" placeholder="e.g. Customer credit scoring model">
+
+    <label class="field-label">Organisation <span style="text-transform:none;letter-spacing:0;font-weight:500;color:var(--faint)">(optional · shown on the PDF report)</span></label>
+    <input type="text" id="clf_org" placeholder="e.g. Acme Retail Ltd">
+
+    <label class="field-label">Sector / domain</label>
+    <select id="clf_sector">
+      <option value="">Select a sector…</option>
+      <option>Employment &amp; recruitment</option>
+      <option>Education &amp; vocational training</option>
+      <option>Financial services &amp; credit</option>
+      <option>Healthcare &amp; medical</option>
+      <option>Insurance</option>
+      <option>Law enforcement</option>
+      <option>Border control &amp; immigration</option>
+      <option>Critical infrastructure (energy, water, transport)</option>
+      <option>Justice &amp; democratic processes</option>
+      <option>Retail &amp; e-commerce</option>
+      <option>Marketing &amp; advertising</option>
+      <option>Public services &amp; benefits</option>
+      <option>Other / general purpose</option>
+    </select>
+
+    <p class="micro">// Characteristics — tick all that apply</p>
+    <div class="checks">
+      <label class="check"><input type="checkbox" id="c_auto"><span>Makes or materially informs decisions about people<span class="hint">e.g. approving loans, screening CVs, triaging patients, allocating benefits</span></span></label>
+      <label class="check"><input type="checkbox" id="c_bio"><span>Processes biometric data<span class="hint">facial recognition, fingerprints, voice, gait — for identification or categorisation</span></span></label>
+      <label class="check"><input type="checkbox" id="c_profile"><span>Profiles or evaluates people<span class="hint">scoring, ranking, predicting behaviour, performance or risk of individuals</span></span></label>
+      <label class="check"><input type="checkbox" id="c_vuln"><span>Affects vulnerable groups<span class="hint">children, elderly, people with disabilities, or those in a position of dependency</span></span></label>
+      <label class="check"><input type="checkbox" id="c_gen"><span>Generates or manipulates content<span class="hint">chatbot, virtual assistant, synthetic text/image/audio/video (deepfakes)</span></span></label>
+      <label class="check"><input type="checkbox" id="c_social"><span>Scores general trustworthiness from social behaviour<span class="hint">general-purpose social scoring across unrelated contexts</span></span></label>
+      <label class="check"><input type="checkbox" id="c_manip"><span>Uses subliminal or exploitative manipulation<span class="hint">techniques that distort behaviour in ways that could cause harm</span></span></label>
+      <label class="check"><input type="checkbox" id="c_emotion"><span>Infers emotions in work or education settings<span class="hint">emotion-recognition of employees or students</span></span></label>
+    </div>
+
+    <button class="btn" onclick="runClassifier()">Assess risk tier</button>
+    <div class="result" id="clf_result"></div>
+  </section>
+
+  <!-- DPIA -->
+  <section class="panel" id="panel-dpia" role="tabpanel">
+    <div class="panel-head">
+      <h2>Data Protection Impact Assessment</h2>
+      <span class="reg">UK GDPR · Article 35</span>
+    </div>
+    <p class="panel-sub">AEGIS applies the Article 35(3) triggers and the ICO's screening criteria, weighs the severity and likelihood of harm, and tells you whether a DPIA is mandatory, advisable, or unlikely to be needed — with reasoning.</p>
+
+    <label class="field-label">Processing activity / system name</label>
+    <input type="text" id="dp_name" placeholder="e.g. Customer credit scoring model">
+
+    <label class="field-label">Organisation <span style="text-transform:none;letter-spacing:0;font-weight:500;color:var(--faint)">(optional · shown on the PDF report)</span></label>
+    <input type="text" id="dp_org" placeholder="e.g. Acme Retail Ltd">
+
+    <p class="micro">// Screening — tick all that apply</p>
+    <div class="checks">
+      <label class="check"><input type="checkbox" id="d_auto"><span>Automated decision-making with legal or similarly significant effects<span class="hint">Art. 35(3)(a) — decisions made about people with little or no human involvement</span></span></label>
+      <label class="check"><input type="checkbox" id="d_special"><span>Large-scale processing of special category or criminal data<span class="hint">Art. 35(3)(b) — health, biometrics, race, religion, sexuality, offences</span></span></label>
+      <label class="check"><input type="checkbox" id="d_monitor"><span>Systematic monitoring of a publicly accessible area<span class="hint">Art. 35(3)(c) — CCTV, tracking, location monitoring at scale</span></span></label>
+      <label class="check"><input type="checkbox" id="d_vuln"><span>Processing data about vulnerable individuals<span class="hint">children, employees, patients, or others with a power imbalance</span></span></label>
+      <label class="check"><input type="checkbox" id="d_biometric"><span>Biometric data used to uniquely identify someone<span class="hint">facial recognition matching, fingerprint identification</span></span></label>
+      <label class="check"><input type="checkbox" id="d_large"><span>Large scale — many people, large data volume, or wide geography<span class="hint">affects a substantial number of individuals</span></span></label>
+      <label class="check"><input type="checkbox" id="d_match"><span>Combining or matching datasets from different sources<span class="hint">data linking beyond the individual's reasonable expectations</span></span></label>
+      <label class="check"><input type="checkbox" id="d_novel"><span>Innovative use of new technology<span class="hint">AI, ML, or other novel technology applied to personal data</span></span></label>
+    </div>
+
+    <button class="btn" onclick="runDPIA()">Assess DPIA requirement</button>
+    <div class="result" id="dp_result"></div>
+  </section>
+
+  <!-- MODEL CARD -->
+  <section class="panel" id="panel-mc" role="tabpanel">
+    <div class="panel-head">
+      <h2>Model Card Generator</h2>
+      <span class="reg">Transparency &amp; accountability</span>
+    </div>
+    <p class="panel-sub">Produce standardised model documentation aligned with EU AI Act technical-documentation expectations and ISO/IEC 42001 transparency principles. Fill what you can — AEGIS structures the rest.</p>
+
+    <label class="field-label">Model name</label>
+    <input type="text" id="mc_name" placeholder="e.g. Customer credit scoring model">
+    <label class="field-label">Version</label>
+    <input type="text" id="mc_version" placeholder="e.g. v2.1">
+    <label class="field-label">Model type</label>
+    <input type="text" id="mc_type" placeholder="e.g. Gradient-boosted decision tree (XGBoost)">
+    <label class="field-label">Owner / developed by</label>
+    <input type="text" id="mc_dev" placeholder="e.g. Data Science team">
+    <label class="field-label">Description &amp; purpose</label>
+    <textarea id="mc_desc" placeholder="What the model does and why it exists"></textarea>
+    <label class="field-label">Intended uses (one per line)</label>
+    <textarea id="mc_intended" placeholder="Assessing creditworthiness for personal loans&#10;Supporting underwriter decisions"></textarea>
+    <label class="field-label">Out-of-scope uses (one per line)</label>
+    <textarea id="mc_out" placeholder="Sole automated decisions without human review&#10;Insurance or employment screening"></textarea>
+    <label class="field-label">Training data summary</label>
+    <textarea id="mc_data" placeholder="Sources, volume, time range, representativeness"></textarea>
+    <label class="field-label">Performance &amp; metrics</label>
+    <textarea id="mc_perf" placeholder="Accuracy, AUC, error rates, evaluation method"></textarea>
+    <label class="field-label">Known limitations (one per line)</label>
+    <textarea id="mc_limits" placeholder="Degrades for thin-file applicants&#10;Not validated outside the UK market"></textarea>
+    <label class="field-label">Bias &amp; fairness considerations (one per line)</label>
+    <textarea id="mc_bias" placeholder="Quarterly bias audits&#10;Geographic representation gaps monitored"></textarea>
+    <label class="field-label">Human oversight</label>
+    <textarea id="mc_oversight" placeholder="Where and how humans review or can override the model"></textarea>
+
+    <button class="btn" onclick="runModelCard()">Generate model card</button>
+    <div class="result" id="mc_result"></div>
+  </section>
+
+  <footer>
+    <div class="f-mark">AE<b>G</b>IS</div>
+    <div class="f-line">Open-source AI governance · Built by <a href="https://linkedin.com/in/kem-a-695462101" target="_blank" rel="noopener">Kem Ada</a> · <a href="https://github.com/Kem-Ada/AEGIS" target="_blank" rel="noopener">GitHub</a> · MIT License</div>
+    <p class="f-disc">AEGIS provides structured decision-support to help teams reason about AI governance obligations. It does not constitute legal advice, and its assessments should be reviewed by a qualified data protection or compliance professional before being relied upon.</p>
+  </footer>
+
+</div>
+
+<div id="printable"></div>
+
+<script>
+document.querySelectorAll('.tab').forEach(t=>{
+  t.addEventListener('click',()=>{
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById('panel-'+t.dataset.tab).classList.add('active');
+  });
+});
+const el = id => document.getElementById(id);
+const esc = s => (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const lines = s => (s||'').split('\n').map(x=>x.trim()).filter(Boolean);
+
+function feedbackBlock(tool){
+  return `<div class="feedback"><div class="ttl">Was this assessment useful?</div>
+    <div class="fb-btns">
+      <button onclick="fbThanks('${tool}')">👍 Accurate</button>
+      <button onclick="fbThanks('${tool}')">🤔 Partly</button>
+      <button onclick="fbThanks('${tool}')">👎 Off the mark</button>
+    </div>
+    <div class="fb-thanks" id="fb-${tool}">Thank you — feedback like this is reviewed and used to refine AEGIS over time.</div></div>`;
+}
+function fbThanks(tool){ el('fb-'+tool).style.display='block'; }
+function meter(score,color){
+  return `<div class="meter-wrap"><div class="meter-top"><span class="lbl">Composite risk score</span><span class="val">${score} / 100</span></div><div class="meter"><div class="meter-fill" style="background:${color}"></div></div></div>`;
+}
+function animateMeter(box,pct){const f=box.querySelector('.meter-fill');if(f){requestAnimationFrame(()=>{f.style.width=pct+'%';});}}
+
+function runClassifier(){
+  const name = el('clf_name').value.trim() || 'This system';
+  const sector = el('clf_sector').value;
+  const box = el('clf_result');
+  if(!sector){
+    box.className='result show';
+    box.innerHTML = `<div class="verdict t-limited"><div class="verdict-top"><span class="tier-chip">Input needed</span></div><h3>Select a sector first</h3><p class="desc">AEGIS needs the operating domain to apply the Annex III high-risk schedule. Choose a sector and run the assessment again.</p></div>`;
+    return;
+  }
+  const f = {auto:el('c_auto').checked,bio:el('c_bio').checked,profile:el('c_profile').checked,vuln:el('c_vuln').checked,gen:el('c_gen').checked,social:el('c_social').checked,manip:el('c_manip').checked,emotion:el('c_emotion').checked};
+  const highRiskSectors = ['Employment & recruitment','Education & vocational training','Financial services & credit','Healthcare & medical','Insurance','Law enforcement','Border control & immigration','Critical infrastructure (energy, water, transport)','Justice & democratic processes','Public services & benefits'];
+  const sectorHigh = highRiskSectors.includes(sector);
+  let steps=[],tier='MINIMAL',score=8;
+  steps.push({h:'1 · Screening for prohibited practices (Article 5)', b:'Checking the unacceptable-risk tests first, since these override everything else.'});
+  let prohibited=false,prohibitedReason='';
+  if(f.social){prohibited=true;prohibitedReason='general-purpose social scoring across unrelated contexts';}
+  else if(f.manip){prohibited=true;prohibitedReason='subliminal or exploitative manipulation likely to cause harm';}
+  else if(f.bio && sector==='Law enforcement'){prohibited=true;prohibitedReason='real-time remote biometric identification in a law-enforcement context';}
+  if(prohibited){
+    tier='UNACCEPTABLE';score=98;
+    steps.push({h:'→ Prohibited practice identified', b:`The system involves <code>${prohibitedReason}</code>. Under Article 5 this is an <strong>unacceptable risk</strong> and may not be placed on the EU market. Assessment stops here — no downstream classification applies.`});
+  } else {
+    steps.push({h:'→ No prohibited practice', b:'None of the Article 5 tests are met. Proceeding to the high-risk schedule.'});
+    steps.push({h:'2 · Applying the high-risk schedule (Annex III)', b:`Operating sector: <code>${esc(sector)}</code>.`});
+    let highReasons=[];
+    if(sectorHigh && (f.auto||f.profile)) highReasons.push(`it makes or informs significant decisions about people in a listed high-risk domain (${esc(sector)})`);
+    if(f.bio) highReasons.push('it processes biometric data for identification or categorisation');
+    if(f.emotion && (sector==='Employment & recruitment'||sector==='Education & vocational training')) highReasons.push('it infers emotions in a workplace or educational setting');
+    if(f.vuln && (f.auto||f.profile)) highReasons.push('it evaluates or affects vulnerable individuals');
+    if(highReasons.length){
+      tier='HIGH';score=Math.min(92,60+highReasons.length*9+(f.vuln?6:0));
+      steps.push({h:'→ Meets high-risk criteria', b:`Classified <strong>high-risk</strong> because ${highReasons.join('; and ')}. The full Chapter III obligation set applies before deployment.`});
+    } else {
+      steps.push({h:'→ Not high-risk', b:'The Annex III tests are not met for this configuration. Checking transparency duties.'});
+      steps.push({h:'3 · Transparency duties (Article 50)', b:'Reviewing whether users must be told they are interacting with, or seeing output from, an AI system.'});
+      if(f.gen){
+        tier='LIMITED';score=38+(f.profile?8:0);
+        steps.push({h:'→ Transparency obligations apply', b:'The system <code>generates or manipulates content / interacts with people</code>. It carries <strong>limited-risk</strong> transparency duties under Article 50 — disclosure and, for synthetic media, machine-readable marking.'});
+      } else {
+        tier='MINIMAL';score=8+(f.profile?10:0)+(f.auto?6:0);
+        steps.push({h:'→ Minimal risk', b:'No prohibited, high-risk, or specific transparency triggers are met. The system falls outside the regulated tiers, though voluntary codes of conduct and good governance still apply.'});
+      }
+    }
+  }
+  const meta = {
+    UNACCEPTABLE:{chip:'Unacceptable risk · Art. 5',title:'Prohibited',cls:'t-unacceptable',color:'#e2574c',desc:`${esc(name)} falls within the EU AI Act's prohibited practices and cannot be lawfully deployed in the EU.`,obs:['Do not place this system on the EU market or put it into service.','Re-scope the system to remove the prohibited practice, then re-assess.','Document the decision and rationale for your governance records.']},
+    HIGH:{chip:'High risk · Annex III',title:'High-risk system',cls:'t-high',color:'#e0972f',desc:`${esc(name)} is high-risk. The full Chapter III obligations must be satisfied before it is placed on the market or put into service.`,obs:['Establish a risk-management system across the lifecycle (Art. 9).','Apply data-governance controls — relevant, representative, error-checked data (Art. 10).','Draw up and maintain technical documentation (Art. 11) and automatic logging (Art. 12).','Ensure transparency and clear instructions for use (Art. 13).','Design effective human oversight (Art. 14).','Meet accuracy, robustness and cybersecurity requirements (Art. 15).','Complete the conformity assessment and register in the EU database before deployment.']},
+    LIMITED:{chip:'Limited risk · Art. 50',title:'Transparency obligations',cls:'t-limited',color:'#3b76b8',desc:`${esc(name)} is not high-risk, but it triggers Article 50 transparency duties.`,obs:['Inform people when they are interacting with an AI system.','Label AI-generated or manipulated content; mark synthetic media in a machine-readable format.','Keep the disclosure clear, timely and accessible.','Maintain light-touch documentation of the system\'s purpose and behaviour.']},
+    MINIMAL:{chip:'Minimal risk',title:'Minimal regulatory risk',cls:'t-minimal',color:'#2f9e6a',desc:`${esc(name)} falls outside the EU AI Act's regulated tiers on the information provided.`,obs:['No mandatory EU AI Act obligations on this configuration.','Adopt a voluntary code of conduct as good practice.','Document the system\'s purpose and intended use.','Re-assess if its function, data, or deployment context changes.']}
+  }[tier];
+  let stepsHtml = steps.map(s=>`<div class="step"><div class="s-head">${s.h}</div><div class="s-body">${s.b}</div></div>`).join('');
+  let obsHtml = meta.obs.map((o,i)=>`<div class="li"><span class="n">${String(i+1).padStart(2,'0')}</span><span>${o}</span></div>`).join('');
+  window._lastReport={tool:'EU AI Act Risk Assessment',reg:'Regulation (EU) 2024/1689',org:el('clf_org').value.trim(),system:name,chip:meta.chip,color:meta.color,title:meta.title,score:score,summary:meta.desc,steps:steps,sections:[{t:(tier==='UNACCEPTABLE'?'Required actions':'Obligations'),items:meta.obs}]};
+  box.className='result show';
+  box.innerHTML = `<div class="verdict ${meta.cls}"><div class="verdict-top"><span class="tier-chip">${meta.chip}</span></div><h3>${meta.title}</h3><p class="desc">${meta.desc}</p>${meter(score,meta.color)}<div class="trace-title">How AEGIS reached this</div><div class="trace">${stepsHtml}</div><div class="block-title">${tier==='UNACCEPTABLE'?'Required actions':'Obligations'}</div>${obsHtml}</div><button class="btn secondary" style="margin-top:18px" onclick="exportPDF()">Export PDF report</button>${feedbackBlock('clf')}<p class="disclaimer">Indicative decision-support under Regulation (EU) 2024/1689 — not legal advice.</p>`;
+  animateMeter(box,score);
+}
+
+function runDPIA(){
+  const name = el('dp_name').value.trim() || 'This processing';
+  const box = el('dp_result');
+  const f = {auto:el('d_auto').checked,special:el('d_special').checked,monitor:el('d_monitor').checked,vuln:el('d_vuln').checked,biometric:el('d_biometric').checked,large:el('d_large').checked,match:el('d_match').checked,novel:el('d_novel').checked};
+  const statutory=[];
+  if(f.auto) statutory.push('Art. 35(3)(a) — automated decisions with significant effects');
+  if(f.special && f.large) statutory.push('Art. 35(3)(b) — large-scale special category / criminal data');
+  if(f.monitor) statutory.push('Art. 35(3)(c) — systematic monitoring of a public area');
+  const icoFlags=[];
+  if(f.biometric) icoFlags.push('biometric identification');
+  if(f.vuln) icoFlags.push('data about vulnerable individuals');
+  if(f.match) icoFlags.push('matching or combining datasets');
+  if(f.novel) icoFlags.push('innovative use of new technology');
+  if(f.large && !f.special) icoFlags.push('large-scale processing');
+  const flagCount = statutory.length + icoFlags.length;
+  let steps=[];
+  steps.push({h:'1 · Statutory triggers (Article 35(3))', b: statutory.length ? `Matched: ${statutory.map(s=>`<code>${s}</code>`).join(' · ')}.` : 'None of the three mandatory statutory triggers are met.'});
+  steps.push({h:'2 · ICO screening criteria', b: icoFlags.length ? `Additional risk indicators present: ${icoFlags.join(', ')}.` : 'No additional ICO screening indicators flagged.'});
+  let required,title,chip,cls,color,score,summary;
+  if(statutory.length>=1 || icoFlags.length>=2){
+    required=true;
+    steps.push({h:'→ DPIA is mandatory', b: statutory.length ? 'At least one statutory Article 35(3) trigger is met, so a DPIA is legally required before processing begins.' : 'Two or more ICO high-risk indicators are present, which the ICO treats as requiring a DPIA.'});
+    if(statutory.length>=2 || (f.biometric&&f.auto) || flagCount>=4){
+      title='DPIA mandatory — elevated';chip='Mandatory · high residual risk';cls='t-high';color='#e0972f';score=Math.min(94,62+flagCount*7);
+      summary='Several high-risk factors stack together. Complete a full DPIA, and if high residual risk remains after mitigations, consult the ICO before proceeding (Art. 36).';
+    } else {
+      title='DPIA mandatory';chip='Mandatory';cls='t-high';color='#e0972f';score=Math.min(82,48+flagCount*8);
+      summary='A DPIA must be completed and signed off before this processing begins. Build in the mitigations below and consult your DPO.';
+    }
+  } else if(icoFlags.length===1){
+    required=false;title='DPIA advisable';chip='Recommended';cls='t-limited';color='#3b76b8';score=30+flagCount*6;
+    steps.push({h:'→ DPIA recommended', b:'One screening indicator is present. A DPIA is not strictly mandatory, but the ICO recommends one as best practice and it is the defensible choice.'});
+    summary='Conduct a DPIA as good practice, or document clearly why the risk is low if you decide not to.';
+  } else {
+    required=false;title='DPIA unlikely to be required';chip='Not indicated';cls='t-minimal';color='#2f9e6a';score=12;
+    steps.push({h:'→ No DPIA trigger met', b:'Neither the statutory triggers nor the screening criteria are met on the information provided. Standard data-protection measures apply.'});
+    summary='A DPIA does not appear to be required. Keep a short record of this screening decision and re-assess if the processing changes.';
+  }
+  let risks=[];
+  if(f.auto) risks.push('Unfair, opaque or discriminatory automated decisions affecting individuals.');
+  if(f.special||f.biometric) risks.push('Severe impact on individuals if sensitive or biometric data is breached or misused.');
+  if(f.large) risks.push('A single failure could affect a large number of people simultaneously.');
+  if(f.vuln) risks.push('Heightened risk of harm to vulnerable people, including children.');
+  if(f.match) risks.push('Processing beyond individuals\' reasonable expectations through dataset combination.');
+  if(f.novel) risks.push('Unanticipated effects from applying novel technology to personal data.');
+  if(!risks.length) risks.push('No significant risks to individuals identified on the information provided.');
+  let mits=[];
+  if(f.auto){mits.push('Build in meaningful human review and a clear route to challenge decisions (Art. 22).');mits.push('Document the decision logic and make it explainable to data subjects.');}
+  if(f.special||f.biometric){mits.push('Confirm an Article 9 condition; minimise, pseudonymise and encrypt sensitive data.');mits.push('Restrict access and set explicit retention and deletion schedules.');}
+  if(f.large) mits.push('Ensure data-subject rights processes scale to the volume of people affected.');
+  if(f.vuln) mits.push('Apply enhanced safeguards and, where children are involved, age-appropriate design.');
+  if(f.novel) mits.push('Engage the DPO early and plan iterative reviews as the technology matures.');
+  mits.push('Record the DPIA outcome and review it whenever the processing materially changes.');
+  mits=[...new Set(mits)];
+  const dpo = (statutory.length>=2 || flagCount>=4 || (f.biometric&&f.large));
+  let stepsHtml = steps.map(s=>`<div class="step"><div class="s-head">${s.h}</div><div class="s-body">${s.b}</div></div>`).join('');
+  let riskHtml = risks.map((r,i)=>`<div class="li"><span class="n">${String(i+1).padStart(2,'0')}</span><span>${r}</span></div>`).join('');
+  let mitHtml = mits.map((m,i)=>`<div class="li"><span class="n">${String(i+1).padStart(2,'0')}</span><span>${m}</span></div>`).join('');
+  window._lastReport={tool:'DPIA Screening Assessment',reg:'UK GDPR Article 35 · ICO guidance',org:el('dp_org').value.trim(),system:name,chip:chip,color:color,title:title,score:score,summary:esc(name)+' — '+summary,steps:steps,extraMeta:[{k:'DPIA required',v:required?'Yes':'Not indicated'},{k:'DPO consultation',v:dpo?'Recommended':'Optional'},{k:'Risk indicators',v:String(flagCount)}],sections:(statutory.length||icoFlags.length)?[{t:'Risks to individuals',items:risks},{t:'Recommended mitigations',items:mits}]:[]};
+  box.className='result show';
+  box.innerHTML = `<div class="verdict ${cls}"><div class="verdict-top"><span class="tier-chip">${chip}</span></div><h3>${title}</h3><p class="desc">${esc(name)} — ${summary}</p>${meter(score,color)}<div class="trace-title">How AEGIS reached this</div><div class="trace">${stepsHtml}</div>${statutory.length||icoFlags.length?`<div class="block-title">Risks to individuals</div>${riskHtml}<div class="block-title">Recommended mitigations</div>${mitHtml}`:''}<div class="meta-row"><div class="meta-item"><div class="k">DPIA required</div><div class="v">${required?'Yes':'Not indicated'}</div></div><div class="meta-item"><div class="k">DPO consultation</div><div class="v">${dpo?'Recommended':'Optional'}</div></div><div class="meta-item"><div class="k">Risk indicators</div><div class="v">${flagCount}</div></div></div></div><button class="btn secondary" style="margin-top:18px" onclick="exportPDF()">Export PDF report</button>${feedbackBlock('dpia')}<p class="disclaimer">Indicative screening under UK GDPR Article 35 and ICO guidance — not legal advice.</p>`;
+  animateMeter(box,score);
+}
+
+function runModelCard(){
+  const box = el('mc_result');
+  const name = el('mc_name').value.trim();
+  if(!name){
+    box.className='result show';
+    box.innerHTML = `<div class="verdict t-limited"><div class="verdict-top"><span class="tier-chip">Input needed</span></div><h3>Add a model name</h3><p class="desc">Enter at least the model name to generate a card.</p></div>`;
+    return;
+  }
+  const bullets = (arr)=> arr.length ? arr.map(x=>'- '+x).join('\n') : '- Not specified';
+  const today = new Date().toISOString().slice(0,10);
+  const md =
+`# Model Card: ${name}
+_Generated by AEGIS — AI Ethics & Governance Integrated System_
+
+## Model details
+| Field | Value |
+|---|---|
+| Model name | ${name} |
+| Version | ${el('mc_version').value.trim()||'Not specified'} |
+| Model type | ${el('mc_type').value.trim()||'Not specified'} |
+| Owner | ${el('mc_dev').value.trim()||'Not specified'} |
+| Card generated | ${today} |
+
+## Description & purpose
+${el('mc_desc').value.trim()||'Not specified'}
+
+## Intended uses
+${bullets(lines(el('mc_intended').value))}
+
+## Out-of-scope uses
+${bullets(lines(el('mc_out').value))}
+
+## Training data
+${el('mc_data').value.trim()||'Not specified'}
+
+## Performance & evaluation
+${el('mc_perf').value.trim()||'Not specified'}
+
+## Known limitations
+${bullets(lines(el('mc_limits').value))}
+
+## Bias & fairness considerations
+${bullets(lines(el('mc_bias').value))}
+
+## Human oversight
+${el('mc_oversight').value.trim()||'Not specified'}
+
+---
+_This model card supports EU AI Act technical-documentation expectations (Art. 11) and ISO/IEC 42001 transparency principles. It is a governance artefact, not a compliance guarantee._`;
+  box.className='result show';
+  box.innerHTML = `<div class="verdict t-minimal"><div class="verdict-top"><span class="tier-chip">Model card ready</span></div><h3>${esc(name)}</h3><p class="desc">Your model card is generated below. Copy it into your repository or documentation, or download it as Markdown.</p></div><div class="codebox" id="mc_md">${esc(md)}</div><button class="btn secondary" onclick="copyMD()" style="margin-top:14px">Copy markdown</button><button class="btn" onclick="dlMD('${name.replace(/[^a-z0-9]/gi,'_')}')">Download .md</button><button class="btn secondary" onclick="exportPDF()" style="margin-top:14px">Export PDF report</button>${feedbackBlock('mc')}`;
+  window._mcMarkdown = md;
+  const il=t=>{const a=lines(t).map(esc);return a.length?a:['Not specified'];};
+  window._lastReport={tool:'Model Card',reg:'EU AI Act Art. 11 · ISO/IEC 42001',org:el('mc_dev').value.trim(),system:name,chip:'Model documentation',color:'#0c8e82',title:esc(name),score:null,summary:esc(el('mc_desc').value.trim())||'Model documentation generated by AEGIS.',steps:null,sections:[
+    {t:'Model details',items:[`Version: ${esc(el('mc_version').value.trim())||'Not specified'}`,`Model type: ${esc(el('mc_type').value.trim())||'Not specified'}`,`Owner: ${esc(el('mc_dev').value.trim())||'Not specified'}`]},
+    {t:'Intended uses',items:il(el('mc_intended').value)},
+    {t:'Out-of-scope uses',items:il(el('mc_out').value)},
+    {t:'Training data',body:esc(el('mc_data').value.trim())||'Not specified'},
+    {t:'Performance & evaluation',body:esc(el('mc_perf').value.trim())||'Not specified'},
+    {t:'Known limitations',items:il(el('mc_limits').value)},
+    {t:'Bias & fairness considerations',items:il(el('mc_bias').value)},
+    {t:'Human oversight',body:esc(el('mc_oversight').value.trim())||'Not specified'}
+  ]};
+}
+function copyMD(){navigator.clipboard.writeText(window._mcMarkdown||'').then(()=>{const b=event.target;const t=b.textContent;b.textContent='Copied ✓';setTimeout(()=>b.textContent=t,1500);});}
+function dlMD(fname){const blob=new Blob([window._mcMarkdown||''],{type:'text/markdown'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=(fname||'model')+'_model_card.md';a.click();}
+
+function exportPDF(){
+  const r=window._lastReport;
+  if(!r){alert('Run an assessment first, then export the report.');return;}
+  const today=new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
+  const ref='AEG-'+new Date().toISOString().slice(0,10).replace(/-/g,'')+'-'+Math.random().toString(36).slice(2,6).toUpperCase();
+  const metaRows=[['Prepared for',esc(r.org)||'—'],['System / activity',esc(r.system)],['Framework',r.reg],['Date',today],['Reference',ref]].concat((r.extraMeta||[]).map(m=>[m.k,m.v]));
+  const metaHtml=metaRows.map(p=>`<tr><td class="k">${p[0]}</td><td>${p[1]}</td></tr>`).join('');
+  const stepsHtml=(r.steps&&r.steps.length)?`<div class="r-sec">How AEGIS reached this</div>`+r.steps.map(s=>`<div class="r-step"><div class="h">${s.h}</div><div class="b">${s.b}</div></div>`).join(''):'';
+  const secHtml=(r.sections||[]).map(sec=>{
+    const inner=sec.items?sec.items.map((x,i)=>`<div class="r-li"><span class="n">${String(i+1).padStart(2,'0')}</span><span>${x}</span></div>`).join(''):`<div class="r-para">${sec.body||''}</div>`;
+    return `<div class="r-sec">${sec.t}</div>${inner}`;
+  }).join('');
+  const scoreHtml=(typeof r.score==='number')?`<div class="r-score"><strong>Composite risk score:</strong> ${r.score} / 100</div>`:'';
+  el('printable').innerHTML=`
+    <div class="r-head"><div class="r-brand">AE<b>G</b>IS</div><div class="r-label">Assessment report</div></div>
+    <div class="r-title">${r.tool}</div>
+    <table class="r-meta">${metaHtml}</table>
+    <div class="r-verdict" style="--rc:${r.color||'#0c8e82'}">
+      <div class="r-chip">${r.chip||''}</div>
+      <div class="r-vt">${r.title}</div>
+      <div class="r-sum">${r.summary||''}</div>
+      ${scoreHtml}
+    </div>
+    ${stepsHtml}
+    ${secHtml}
+    <div class="r-sign"><div>Reviewed by</div><div>Role</div><div>Date</div></div>
+    <div class="r-disc">This report provides structured decision-support generated by AEGIS. It does not constitute legal advice and should be reviewed by a qualified data protection or compliance professional before being relied upon.</div>
+    <div class="r-foot">Generated by AEGIS · Open-source AI governance · github.com/Kem-Ada/AEGIS · Built by Kem Ada · MIT License</div>`;
+  window.print();
+}
+</script>
+</body>
+</html>
