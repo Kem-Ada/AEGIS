@@ -1,5 +1,6 @@
 """
 AEGIS — AI Ethics & Governance Integrated System
+# Copyright (c) 2026 Kem Ada. Licensed under the MIT License.
 EU AI Act Risk Classification Engine
 
 Classifies AI systems by risk tier based on EU AI Act requirements.
