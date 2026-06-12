@@ -1,5 +1,6 @@
 """
 AEGIS — AI Ethics & Governance Integrated System
+# Copyright (c) 2026 Kem Ada. Licensed under the MIT License.
 GDPR Article 35 DPIA Mapper
 
 Maps AI systems against GDPR Article 35 DPIA requirements.
