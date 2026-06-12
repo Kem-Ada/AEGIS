@@ -3,6 +3,7 @@
 > Founded and maintained by Kem Ada
 >
 > AEGIS is an independent open source project created by Kem Ada to support practical AI governance and AI security workflows
+> 
 > Open source Python framework for AI security, governance, human-in-the-loop controls, explainability, and regulatory compliance across EU AI Act, GDPR Article 35, and ISO/IEC 42001.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
