@@ -1,8 +1,8 @@
 # Contributing to AEGIS
 
-Thank you for your interest in contributing to AEGIS — AI Ethics & Governance Integrated System. 🎉
+Thank you for your interest in contributing to AEGIS; AI Ethics & Governance Integrated System. 🎉
 
-AEGIS is a community-driven open source project. Whether you're an AI security professional, governance practitioner, machine learning engineer, or developer — your contributions are welcome.
+AEGIS is a community-driven open source project. Whether you're an AI security professional, governance practitioner, machine learning engineer, or developer, your contributions are welcome.
 
 ---
 
