@@ -1,5 +1,6 @@
 """
 AEGIS — AI Ethics & Governance Integrated System
+# Copyright (c) 2026 Kem Ada. Licensed under the MIT License.
 Streamlit UI — EU AI Act Classifier, Model Card Generator, DPIA Mapper
 Author: Kem Ada | https://linkedin.com/in/kem-a-695462101
 """
