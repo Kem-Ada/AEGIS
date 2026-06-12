@@ -1,5 +1,8 @@
 # AEGIS — AI Ethics & Governance Integrated System
 
+> Founded and maintained by Kem Ada
+>
+> AEGIS is an independent open source project created by Kem Ada to support practical AI governance and AI security workflows
 > Open source Python framework for AI security, governance, human-in-the-loop controls, explainability, and regulatory compliance across EU AI Act, GDPR Article 35, and ISO/IEC 42001.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -152,7 +155,7 @@ Free to use, modify, and distribute. Attribution appreciated.
 
 ## About
 
-AEGIS was created by [Kem Ada](https://linkedin.com/in/kem-a-695462101), a Cybersecurity GRC & AI Risk Specialist with global experience across EMEA, North America, and APAC. The project grew out of real-world enterprise AI security and governance work and the absence of accessible, open source tooling that treats AI security and AI governance as two sides of the same problem.
+AEGIS is an independent open source project founded and maintained by [Kem Ada](https://linkedin.com/in/kem-a-695462101), a Cybersecurity GRC & AI Risk Specialist with global experience across EMEA, North America, and APAC. The project grew out of real-world enterprise AI security and governance work and the absence of accessible, open source tooling that treats AI security and AI governance as two sides of the same problem.
 
 ---
 
