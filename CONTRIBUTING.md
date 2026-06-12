@@ -27,6 +27,12 @@ Have an idea for a new module or improvement? Open an Issue with the label `enha
 4. Commit with a clear message: `git commit -m "Add: EU AI Act Article 13 transparency module"`
 5. Push to your fork: `git push origin feature/your-feature-name`
 6. Open a Pull Request
+   
+By submitting a contribution to AEGIS, you confirm that:
+- You have the right to submit the contribution
+- The contribution is your original work
+- You agree that your contribution will be licensed under the AEGIS MIT License
+- Contributions are reviewed and accepted at the discretion of the maintainer.
 
 ---
 
