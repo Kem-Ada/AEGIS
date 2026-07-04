@@ -58,91 +58,103 @@ AEGIS bridges the gap between AI deployment and AI accountability with security 
 
 ## Quick Start
 
+Clone the repository and run the Streamlit app from source:
+
 ```bash
-pip install aegis-framework
+git clone https://github.com/Kem-Ada/AEGIS.git
+cd AEGIS
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+streamlit run app.py
 ```
+
+### Python API examples
+
+Classify an AI system under the EU AI Act:
 
 ```python
-from aegis import RiskClassifier, ModelCardGenerator, HITLController
+from classifier import classify_ai_system
 
-# Classify an AI system under EU AI Act
-classifier = RiskClassifier()
-result = classifier.classify(
+result = classify_ai_system(
     system_name="Customer Credit Scoring Model",
-    domain="financial_services",
-    automated_decision=True
+    makes_automated_decisions_about_people=True,
+    sector="financial services",
 )
-print(result.risk_tier)        # "HIGH"
-print(result.obligations)      # List of applicable EU AI Act obligations
 
-# Generate a model card
-card = ModelCardGenerator()
-card.generate(model_name="credit-scorer-v2", output_format="markdown")
-
-# Define human-in-the-loop controls
-hitl = HITLController()
-hitl.define_checkpoint(
-    decision_type="credit_denial",
-    required_reviewer="human",
-    escalation_threshold=0.85
-)
+print(result.risk_tier)
+print(result.rationale)
 ```
 
----
+Assess whether a DPIA is required:
 
-## Features
+```python
+from dpia_mapper import assess_dpia_requirement
 
-| Feature | Status |
-|---|---|
-| EU AI Act risk classification engine | ✅ Available |
-| Model card generator (Markdown + JSON) | ✅ Available |
-| GDPR Article 35 DPIA mapping | ✅ Available |
-| AI security threat assessment module | 🔄 In progress |
-| Human-in-the-loop control framework | 🔄 In progress |
-| Explainability & transparency reporting | 🔄 In progress |
-| AI system inventory tracker | 🔄 In progress |
-| Streamlit dashboard UI | ✅ Available |
-| AWS / Azure / GCP integration docs | 📅 Planned |
+result = assess_dpia_requirement(
+    system_name="Customer Credit Scoring Model",
+    automated_decisions=True,
+    large_scale=True,
+    novel_technology=True,
+)
 
-## Live Demo
-**Try AEGIS in your browser:** [kem-ada.github.io/AEGIS](https://kem-ada.github.io/AEGIS/) — run assessments, view step-by-step reasoning, and export branded PDF reports. No installation required.
+print(result.dpia_required)
+print(result.requirement_rationale)
+```
 
-A Streamlit build of the Python package also runs at [aegis-classifier.streamlit.app](https://aegis-classifier.streamlit.app)
+Generate a model card:
+
+```python
+from model_card import ModelCard, generate_model_card
+```
+
+A Streamlit build also runs at [aegis-classifier.streamlit.app](https://aegis-classifier.streamlit.app).
 
 ---
 
 ## Installation
 
-**Requirements:** Python 3.9+, pandas, pydantic, streamlit
+Requirements:
+
+- Python 3.9+
+- Streamlit
+
+Install dependencies:
 
 ```bash
-git clone https://github.com/Kem-Ada/AEGIS.git
-cd aegis
 pip install -r requirements.txt
+```
+
+Run the app:
+
+```bash
+streamlit run app.py
 ```
 
 ---
 
 ## Contributing
 
-AEGIS is community-driven. We welcome contributions from AI security professionals, AI governance practitioners, machine learning engineers, and anyone working at the intersection of security, ethics, and responsible AI.
+AEGIS welcomes contributions from AI security professionals, AI governance practitioners, machine learning engineers, and anyone working at the intersection of security, ethics, and responsible AI.
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) to get started. Good first issues are labelled `good-first-issue`.
+See [CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request.
 
-Areas where we especially welcome help:
+Useful contribution areas include:
+
 - AI security threat modelling and adversarial risk frameworks
 - Human-in-the-loop patterns and oversight mechanisms
 - Explainability and interpretability tooling
-- Additional regulatory mappings (NIST AI RMF, ISO 42001, UK AI Code of Practice)
-- Cloud platform integration examples (AWS, Azure, GCP)
+- Additional regulatory mappings
+- Cloud platform integration examples
+- Tests and documentation improvements
 
 ---
 
 ## Community & Support
 
-- 💬 [GitHub Discussions](https://github.com/aegis-framework/aegis/discussions) — questions, ideas, show and tell
-- 🐛 [Issues](https://github.com/aegis-framework/aegis/issues) — bug reports and feature requests
-- 📣 Follow project updates on [LinkedIn](https://linkedin.com/in/kem-a-695462101)
+- [GitHub Discussions](https://github.com/Kem-Ada/AEGIS/discussions)
+- [Issues](https://github.com/Kem-Ada/AEGIS/issues)
+- [LinkedIn](https://linkedin.com/in/kem-a-695462101)
 
 ---
 
